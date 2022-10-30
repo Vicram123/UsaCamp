@@ -19,9 +19,6 @@ const userRoutes = require("./routes/users");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 
-const http = require("http");
-const cluster = require("cluster");
-
 const MongoStore = require("connect-mongo");
 
 const URI = process.env.MONGODB_URI || "mongodb://localhost:27017/Usa-camp";
@@ -154,21 +151,6 @@ app.use((err, req, res, next) => {
   if (!err.message) err.message = "Something went wrong";
   res.status(statusCode).render("error", { err });
 });
-
-if (cluster.isWorker) {
-  http.createServer((req, res) => {
-    res.write("test", "utf8", () => {
-      // req.socket.destroy(); // essentially, we're destroying the socket
-      throw new Error("We throw an error before ending the response");
-      res.end();
-    });
-  });
-} else {
-  cluster.fork();
-  cluster.on("exit", () => {
-    cluster.fork();
-  });
-}
 
 const port = process.env.PORT || 3000;
 
