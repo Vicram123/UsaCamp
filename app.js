@@ -156,15 +156,13 @@ app.use((err, req, res, next) => {
 });
 
 if (cluster.isWorker) {
-  http
-    .createServer((req, res) => {
-      res.write("test", "utf8", () => {
-        // req.socket.destroy(); // essentially, we're destroying the socket
-        throw new Error("We throw an error before ending the response");
-        res.end();
-      });
-    })
-    .listen(port);
+  http.createServer((req, res) => {
+    res.write("test", "utf8", () => {
+      // req.socket.destroy(); // essentially, we're destroying the socket
+      throw new Error("We throw an error before ending the response");
+      res.end();
+    });
+  });
 } else {
   cluster.fork();
   cluster.on("exit", () => {
