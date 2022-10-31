@@ -7,12 +7,15 @@ const multer = require("multer");
 const { storage } = require("../cloudinary");
 const upload = multer({ storage });
 
-router.route("/").get(catchAsync(campgrounds.index)).post(
-  isLoggedIn,
-  upload.array("image"),
-
-  catchAsync(campgrounds.createCampground)
-);
+router
+  .route("/")
+  .get(catchAsync(campgrounds.index))
+  .post(
+    isLoggedIn,
+    upload.array("image"),
+    validateCampground,
+    catchAsync(campgrounds.createCampground)
+  );
 //.post(upload.array("image"), (req, res) => {
 //  console.log(req.body, req.files);
 //  res.send("it work");
