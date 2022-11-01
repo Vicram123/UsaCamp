@@ -19,6 +19,15 @@ router
 
 router.get("/new", isLoggedIn, campgrounds.renderNewForm);
 
+router.get("/:id", catchAsync(campgrounds.showCampground));
+
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isAuthor,
+  catchAsync(campgrounds.renderEditForm)
+);
+
 router
   .route("/:id")
   .get(catchAsync(campgrounds.showCampground))
@@ -30,12 +39,5 @@ router
     catchAsync(campgrounds.updateCampground)
   )
   .delete(catchAsync(campgrounds.deleteCampground));
-
-router.get(
-  "/:id/edit",
-  isLoggedIn,
-  isAuthor,
-  catchAsync(campgrounds.renderEditForm)
-);
 
 module.exports = router;
