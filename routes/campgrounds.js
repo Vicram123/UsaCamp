@@ -16,21 +16,8 @@ router
     validateCampground,
     catchAsync(campgrounds.createCampground)
   );
-//.post(upload.array("image"), (req, res) => {
-//  console.log(req.body, req.files);
-//  res.send("it work");
-//});
 
 router.get("/new", isLoggedIn, campgrounds.renderNewForm);
-
-router.get("/:id", catchAsync(campgrounds.showCampground));
-
-router.get(
-  "/:id/edit",
-  isLoggedIn,
-  isAuthor,
-  catchAsync(campgrounds.renderEditForm)
-);
 
 router
   .route("/:id")
@@ -43,5 +30,12 @@ router
     catchAsync(campgrounds.updateCampground)
   )
   .delete(catchAsync(campgrounds.deleteCampground));
+
+router.get(
+  "/:id/edit",
+  isLoggedIn,
+  isAuthor,
+  catchAsync(campgrounds.renderEditForm)
+);
 
 module.exports = router;
